@@ -16,7 +16,7 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      
+
     ports:
       - "80:80"
       - "443:443"
@@ -46,7 +46,7 @@ services:
     # Traefik Labels
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mon-api.rule=Host(`api-demo@codenumx.com`)"
+      - "traefik.http.routers.mon-api.rule=Host(`api-demo.codenumx.com`)"
       - "traefik.http.routers.mon-api.entrypoints=web"
       - "traefik.http.services.mon-api.loadbalancer.server.port=3000"
 
