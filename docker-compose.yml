@@ -16,12 +16,17 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
+      # Let's Encrypt Config
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=admin@codenumx.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
 
     ports:
-      - "8082:80"
+      - "80:80"
       - "443:443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
     networks:
       - web
 
@@ -47,8 +52,15 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mon-api.rule=Host(`api-demo.codenumx.com`)"
-      - "traefik.http.routers.mon-api.entrypoints=web"
+      - "traefik.http.routers.mon-api.entrypoints=websecure"
+      - "traefik.http.routers.mon-api.tls.certresolver=myresolver"
       - "traefik.http.services.mon-api.loadbalancer.server.port=3000"
+
+      # Redirection HTTP vers HTTPS (Optionnel si tu veux forcer le SSL)
+      - "traefik.http.routers.mon-api-http.rule=Host(`api-demo.codenumx.com`)"
+      - "traefik.http.routers.mon-api-http.entrypoints=web"
+      - "traefik.http.routers.mon-api-http.middlewares=https-redirect"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
 
     # Redémarrage automatique si le serveur plante.
     restart: always
