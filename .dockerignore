@@ -1,0 +1,6 @@
+# Fichiers à ignorer par Docker pour ne pas alourdir l'image
+node_modules
+npm-debug.log
+.git
+.DS_Store
+.env

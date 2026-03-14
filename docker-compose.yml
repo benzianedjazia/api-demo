@@ -1,0 +1,31 @@
+# ============================================================
+# 🚢 docker-compose.yml — Orchestration du conteneur
+# ============================================================
+# Docker Compose permet de lancer et configurer des conteneurs facilement.
+# Au lieu de taper une longue commande 'docker run...', on utilise ce fichier.
+# ============================================================
+
+services:
+  # On donne un nom à notre service (notre application)
+  mon-api:
+    # 'build: .' dit à Docker de construire l'image en utilisant le Dockerfile local.
+    build: .
+
+    # Nom que portera le conteneur quand il sera lancé.
+    container_name: api_node_apprentissage
+
+    # MAPPING DES PORTS (Hôte:Conteneur)
+    # On lie le port 3000 de notre ordi au port 3000 du conteneur Docker.
+    # On pourra accéder à l'API via http://localhost:3000
+    ports:
+      - "3000:3000"
+
+    # VOLUMES (Persistance des données)
+    # On lie le dossier 'data' de notre ordi au dossier 'data' du conteneur.
+    # IMPORTANT : Sans ça, si tu supprimes le conteneur, tes tâches disparaissent !
+    # Avec ça, le fichier tasks.json est partagé entre ton ordi et Docker.
+    volumes:
+      - ./data:/app/data
+
+    # Redémarrage automatique si le serveur plante.
+    restart: always

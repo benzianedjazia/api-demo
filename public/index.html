@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GestiTâches — Votre assistant personnel</title>
+    <!-- On importe une belle police depuis Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- On lie notre fichier CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Favicon simple -->
+    <link rel="icon" href="https://fav.farm/🚀">
+</head>
+<body>
+    <!-- Fond animé subtil -->
+    <div class="bg-blur"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="icon">✨</span>
+                <h1>Gesti<span>Tâches</span></h1>
+            </div>
+            <p class="subtitle">Organisez vos idées, simplifiez votre vie.</p>
+        </header>
+
+        <!-- Formulaire d'ajout de tâche -->
+        <section class="add-task">
+            <div class="glass-card">
+                <form id="task-form">
+                    <div class="input-group">
+                        <input type="text" id="task-title" placeholder="Qu'avez-vous prévu de faire ?" required>
+                        <select id="task-priority">
+                            <option value="basse">🟢 Basse</option>
+                            <option value="moyenne" selected>🟡 Moyenne</option>
+                            <option value="haute">🔴 Haute</option>
+                        </select>
+                        <button type="submit" id="add-btn">
+                            <span class="btn-text">Ajouter</span>
+                            <span class="btn-icon">+</span>
+                        </button>
+                    </div>
+                    <textarea id="task-desc" placeholder="Détails (facultatif)..."></textarea>
+                </form>
+            </div>
+        </section>
+
+        <!-- Liste des tâches -->
+        <main>
+            <div class="list-header">
+                <h2>Mes Tâches</h2>
+                <div id="stats" class="stats">
+                    Chargement...
+                </div>
+            </div>
+            
+            <div id="tasks-container" class="tasks-grid">
+                <!-- Les tâches seront insérées ici par JavaScript -->
+                <div class="loader">Un instant... ⏳</div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 GestiTâches • Fait avec ❤️ pour apprendre Node.js</p>
+        </footer>
+    </div>
+
+    <!-- On lie notre fichier JavaScript à la fin pour ne pas bloquer l'affichage -->
+    <script src="script.js"></script>
+</body>
+</html>
