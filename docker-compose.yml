@@ -6,6 +6,23 @@
 # ============================================================
 
 services:
+  # Traefik - Le Reverse Proxy
+  traefik:
+    image: traefik:v3.6
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web
+
   # On donne un nom à notre service (notre application)
   mon-api:
     # 'build: .' dit à Docker de construire l'image en utilisant le Dockerfile local.
@@ -15,17 +32,27 @@ services:
     container_name: api_node_apprentissage
 
     # MAPPING DES PORTS (Hôte:Conteneur)
-    # On lie le port 3000 de notre ordi au port 3000 du conteneur Docker.
-    # On pourra accéder à l'API via http://localhost:3000
-    ports:
-      - "3000:3000"
+    # Plus besoin d'exposer le port 3000 directement si on passe par Traefik
+    # ports:
+    #   - "3000:3000"
 
     # VOLUMES (Persistance des données)
     # On lie le dossier 'data' de notre ordi au dossier 'data' du conteneur.
-    # IMPORTANT : Sans ça, si tu supprimes le conteneur, tes tâches disparaissent !
-    # Avec ça, le fichier tasks.json est partagé entre ton ordi et Docker.
     volumes:
       - ./data:/app/data
 
+    # Traefik Labels
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mon-api.rule=Host(`api-demo@codenumx.com`)"
+      - "traefik.http.routers.mon-api.entrypoints=web"
+      - "traefik.http.services.mon-api.loadbalancer.server.port=3000"
+
     # Redémarrage automatique si le serveur plante.
     restart: always
+    networks:
+      - web
+
+networks:
+  web:
+    external: false
